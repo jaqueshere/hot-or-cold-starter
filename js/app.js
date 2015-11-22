@@ -79,4 +79,4 @@ function feedback(number, last, current) {
           tempDisplay = "hotter";
         }
 
-}
+} 
