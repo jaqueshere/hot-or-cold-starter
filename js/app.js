@@ -12,32 +12,57 @@ $(document).ready(function(){
   		$(".overlay").fadeOut(1000);
   	});
 
-  	NewGame();
+    NewGame();
 
-    $(".new").click(NewGame());
+    $(".new").click(NewGame);
 
     $("#guessButton").click( 
       function(e) {
         e.preventDefault();
         guess = $("#userGuess").val();
+        var oldTemp = Math.abs(myNumber - lastGuess);
         guessCount++;
-        temperature = Math.abs(myNumber - guess);
+        var temperature = Math.abs(myNumber - guess);
         tempDisplay = "";
-        if (temperature > 20)
+
+        if (guess == myNumber) {
+          tempDisplay = "just right!";
+        }
+
+        else if (firstGuess && (temperature > 20)) {
           tempDisplay = "cold";
-        else
+        }
+
+        else if (firstGuess && (temperature < 20)) {
           tempDisplay = "hot";
+        }
+
+        else if (temperature > oldTemp) {
+          tempDisplay = "colder";
+        }
+
+        else {
+          tempDisplay = "hotter";
+        }
+
         $("#feedback").text(tempDisplay);
         $("#guessList").append("<li>" + guess + "</li>");
         $("#count").text(guessCount);
+        $("#userGuess").val("");
+        lastGuess = guess;
+        firstGuess = false;
     });
-
-    function NewGame() {
-      guessCount = 0;
-      myNumber = Math.floor((Math.random()*100) + 1);
-      lastGuess = 0;
-    }
 
 });
 
-
+    function NewGame() {
+      $("#feedback").text("Make your Guess!");
+      $("#guessList").empty();
+      $("#userGuess").val("");
+      guessCount = 0;
+      $("#count").text(guessCount);
+      myNumber = Math.floor((Math.random()*100) + 1);
+      lastGuess = 0;
+      firstGuess = true;
+      console.log("hello");
+    }
